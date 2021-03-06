@@ -1,0 +1,1 @@
+source ~/.enhancd/enhancd.sh
