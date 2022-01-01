@@ -1,36 +1,108 @@
+# --------------------------------------------------------------------------
 # zplug
+# --------------------------------------------------------------------------
+
 source ~/.zplug/init.zsh
+# 「ユーザ名/リポジトリ名」で記述し、ダブルクォートで見やすく括る（括らなくてもいい）
+zplug "zsh-users/zsh-syntax-highlighting"
+zplug "b4b4r07/enhancd", use:"init.sh"
 
-
+# check コマンドで未インストール項目があるかどうか verbose にチェックし
+# false のとき（つまり未インストール項目がある）y/N プロンプトで
+# インストールする
 if ! zplug check --verbose; then
-  printf 'Install? [y/N]: '
-  if read -q; then
-    echo; zplug install
-  fi
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
 fi
 
+# プラグインを読み込み、コマンドにパスを通す
+zplug load --verbose
 
-########################################
+# peco
+function peco-history-selection() {
+    BUFFER=`history -n 1 | tail -r  | awk '!a[$0]++' | peco`
+    CURSOR=$#BUFFER
+    zle reset-prompt
+}
+
+zle -N peco-history-selection
+bindkey '^R' peco-history-selection
+ 
+
+
+# --------------------------------------------------------------------------
+# 基本設定
+# --------------------------------------------------------------------------
+setopt interactive_comments  # '#' 以降をコメントとして扱う
+setopt no_beep  # ビープ音を鳴らさない
+setopt print_eight_bit  # 日本語ファイル名を表示可能にする
+setopt correct  # コマンドのスペルミスを指摘
+setopt auto_cd  # cd無しでもディレクトリ移動
+autoload -Uz colors  # 色を使用出来るようにする
+export TERM=xterm-256color
+
+
+# --------------------------------------------------------------------------
 # 環境変数
-export LANG=ja_JP.UTF-8
+# --------------------------------------------------------------------------
 
+export LANG=ja_JP.UTF-8
 export PATH="$HOME/bin:$PATH"
 
 
 
-######################################
-
-# 色を使用出来るようにする
-autoload -Uz colors
-colors
-
+# --------------------------------------------------------------------------
 # ヒストリの設定
-HISTFILE=~/.zsh_history
-HISTSIZE=1000000
-SAVEHIST=1000000
+# --------------------------------------------------------------------------
 
-######################################
+setopt share_history  # 同時に起動しているzshの間でhistoryを共有する
+setopt hist_ignore_all_dups  # 同じコマンドをhistoryに残さない
+setopt hist_reduce_blanks  # historyに保存するときに余分なスペースを削除する
+HISTFILE=~/.zsh_history  # 履歴ファイルの保存先
+HISTSIZE=1000000  # メモリに保存される履歴の件数
+SAVEHIST=1000000  # HISTFILE で指定したファイルに保存される履歴の件数
+
+
+
+# --------------------------------------------------------------------------
+# エイリアス系
+# --------------------------------------------------------------------------
+
+# Git系
+alias g='git'
+alias ga='git add'
+alias gc='git commit'
+alias gco='git checkout'
+alias gs='git status'
+alias gp='git push'
+
+# Docker系
+alias d='docker'
+alias dc='docker-compose'
+
+# Tmux系
+alias t='tmux'
+
+# Shell Script系
+alias ide='./ide.zsh'
+
+# Vim系
+alias nv='nvim'
+
+# Linux系
+alias ls='exa --icons'
+
+# Tool系　
+alias ondo='istats all'
+
+alias ed='nv ~/.config/nvim/init.vim'
+
+
+# --------------------------------------------------------------------------
 # プロンプトの設定
+# --------------------------------------------------------------------------
 
 export CLICOLOR=1
 
@@ -116,70 +188,3 @@ setopt prompt_subst
 # プロンプトの右側にメソッドの結果を表示させる
 RPROMPT='`rprompt-git-current-branch`'
 
-
-################################################
-#                   Git系
-################################################
-alias g='git'
-alias ga='git add'
-alias gc='git commit'
-alias gco='git checkout'
-alias gs='git status'
-alias gp='git push'
-
-
-
-################################################
-#                   Tmux系
-################################################
-alias t='tmux'
-
-
-
-################################################
-#                Shell Script系
-################################################
-alias ide='./ide.zsh'
-
-
-
-################################################
-#                Vim系
-################################################
-
-alias nv='nvim'
-
-
-
-
-
-
-
-
-##################################################
-### オプション
-
-# '#' 以降をコメントとして扱う
-setopt interactive_comments
-
-# ビープ音を鳴らさない
-setopt no_beep
-
-# 日本語ファイル名を表示可能にする
-setopt print_eight_bit
-
-# 同時に起動しているzshの間でhistoryを共有する
-setopt share_history
-
-# 同じコマンドをhistoryに残さない
-setopt hist_ignore_all_dups
-
-# historyに保存するときに余分なスペースを削除する
-setopt hist_reduce_blanks
-
-# コマンドのスペルミスを指摘
-setopt correct
-
-
-# cd無しでもディレクトリ移動
-setopt auto_cd
