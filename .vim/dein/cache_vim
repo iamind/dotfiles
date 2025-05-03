@@ -1,3 +1,0 @@
-['/Users/zen/.vimrc']
-{"dein.vim":{"lazy":0,"name":"dein.vim","rtp":"/Users/zen/.vim/dein/repos/github.com/Shougo/dein.vim","repo":"/Users/zen/.vim/dein/repos/github.com/Shougo/dein.vim","normalized_name":"dein","type":"git","local":1,"merged":0,"sourced":1,"path":"/Users/zen/.vim/dein/repos/github.com/Shougo/dein.vim"},"nerdtree":{"lazy":0,"path":"/Users/zen/.vim/dein/repos/github.com/scrooloose/nerdtree","repo":"scrooloose/nerdtree","merged":1,"normalized_name":"nerdtree","type":"git","rtp":"/Users/zen/.vim/dein/repos/github.com/scrooloose/nerdtree","sourced":1,"name":"nerdtree"}}
-{}

@@ -47,10 +47,9 @@ export TERM=xterm-256color
 # --------------------------------------------------------------------------
 # 環境変数
 # --------------------------------------------------------------------------
-
+export PATH="$HOME/.nodebrew/current/bin:$PATH"
 export LANG=ja_JP.UTF-8
 export PATH="$HOME/bin:$PATH"
-
 
 
 # --------------------------------------------------------------------------
@@ -82,6 +81,9 @@ alias gp='git push'
 alias d='docker'
 alias dc='docker-compose'
 
+# kubectl
+alias k='kubectl'
+
 # Tmux系
 alias t='tmux'
 
@@ -98,7 +100,7 @@ alias ls='exa --icons'
 alias ondo='istats all'
 
 alias ed='nv ~/.config/nvim/init.vim'
-
+alias nvf='nv ~/.config/nvim'
 
 # --------------------------------------------------------------------------
 # プロンプトの設定
@@ -188,3 +190,7 @@ setopt prompt_subst
 # プロンプトの右側にメソッドの結果を表示させる
 RPROMPT='`rprompt-git-current-branch`'
 
+
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
