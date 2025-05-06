@@ -39,6 +39,7 @@ brew analytics off   # 📉 匿名統計送信をオフにして通信を抑止
 cli_pkgs=(
   git          # Git 本体
   mas          # Mac App Store CLI
+  neovim       # NeoVim
 )
 echo "🛠  CLI ツールをインストール / 更新します..."
 brew install "${cli_pkgs[@]}"
@@ -57,6 +58,7 @@ casks=(
   # --- PC 操作系 ---
   raycast
   bettertouchtool
+  alt-tab
 
   # --- 学習環境 ---
   anki
@@ -75,9 +77,7 @@ brew install --cask "${casks[@]}"
 # 5. Mac App Store アプリ（mas）
 # --------------------------------------------------
 mas_apps=(
-  462058435  # Excel
-  462062816  # PowerPoint
-  462054704  # Word
+  # --- 現状はなし ---
 )
 echo "🏬 App Store アプリをインストール / 更新します..."
 for id in "${mas_apps[@]}"; do
@@ -97,6 +97,14 @@ done
 #    ここに名前を追記して備忘録として利用してください
 # --------------------------------------------------
 # - Claude Desktop
+# - Google 日本語入力
+# ---  Chrome拡張機能 --- 
+# - 1password
+# - Vimium
+# ---  下記導入予定 --- 
+# - 462058435  # Excel
+# - 462062816  # PowerPoint
+# - 462054704  # Word
 
 
 echo "🎉 すべてのアプリが最新の状態になりました！"
