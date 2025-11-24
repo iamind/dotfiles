@@ -1,69 +1,69 @@
-# Tokyo Night Style Starship Config
+# ==============================================================================
+#  Tokyo Night Bubble Style (Separated)
+# ==============================================================================
 
+# --- 表示フォーマット ---
+# 各モジュールを独立したカプセル(Bubble)として表示します
 format = """
-$username\
-$hostname\
 $directory\
 $git_branch\
-$git_state\
 $git_status\
 $cmd_duration\
 $line_break\
 $character"""
 
-# パレット定義 (Tokyo Night)
+# --- カラーパレット (Tokyo Night) ---
 palette = "tokyo_night"
 
 [palettes.tokyo_night]
-black = "#414868"
-red = "#f7768e"
-green = "#9ece6a"
-yellow = "#e0af68"
+black = "#15161e"
 blue = "#7aa2f7"
-purple = "#bb9af7"
 cyan = "#7dcfff"
+green = "#9ece6a"
+purple = "#bb9af7"
+red = "#f7768e"
 white = "#a9b1d6"
-bright_black = "#414868"
+yellow = "#e0af68"
+gray = "#414868"
 
-[character]
-success_symbol = "[❯](bold green)"
-error_symbol = "[❯](bold red)"
-vimcmd_symbol = "[❮](bold green)"
+# --- 各モジュールの設定 ---
 
 [directory]
-style = "bold blue"
+# 青いカプセル
+style = "fg:black bg:blue bold"
+format = '[]($style)[ $path ]($style)[](fg:blue) '
 truncation_length = 3
 truncate_to_repo = false
+read_only = " 🔒"
 
 [git_branch]
-style = "bold purple"
+# 紫のカプセル
+style = "fg:black bg:purple bold"
 symbol = " "
+format = '[]($style)[ $symbol$branch ]($style)[](fg:purple) '
 
 [git_status]
-style = "bold red"
+# ステータスがある時だけ赤く表示
+style = "fg:red bold"
+format = '[$all_status$ahead_behind]($style) '
 conflicted = "​"
-ahead = "⇡${count}"
-behind = "⇣${count}"
-diverged = "⇕⇡${ahead_count}⇣${behind_count}"
 untracked = "?${count}"
-stashed = "$${count}"
 modified = "!${count}"
 staged = "+${count}"
 renamed = "»${count}"
 deleted = "✘${count}"
 
 [cmd_duration]
+# 実行に時間がかかった時だけ黄色のカプセルを表示 (2秒以上)
 min_time = 2000
-style = "bold yellow"
+style = "fg:black bg:yellow bold"
+format = '[]($style)[ ⏱ $duration ]($style)[](fg:yellow) '
 
-[username]
-style_user = "white bold"
-style_root = "black bold"
-format = "[$user]($style) "
+[line_break]
 disabled = false
-show_always = false
 
-[hostname]
-ssh_only = true
-format = "on [$hostname](bold red) "
-disabled = false
+[character]
+# 入力行のマーク
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold green)"

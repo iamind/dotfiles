@@ -5,29 +5,7 @@
 # ------------------------------------------------------------------------------
 # 1. プラグインマネージャ (zplug)
 # ------------------------------------------------------------------------------
-if [[ -f ~/.zplug/init.zsh ]]; then
-  source ~/.zplug/init.zsh
-  
-  # --- プラグイン定義 ---
-  # 1. シンタックスハイライト (コマンドの色分け)
-  zplug "zsh-users/zsh-syntax-highlighting"
-  
-  # 2. 【追加】入力補完 (履歴から薄い文字で提案) -> これが最強機能です
-  zplug "zsh-users/zsh-autosuggestions"
-  
-  # 3. cdコマンドの強化
-  zplug "b4b4r07/enhancd", use:"init.sh"
 
-  # --- インストール確認 ---
-  if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-      echo; zplug install
-    fi
-  fi
-  
-  zplug load
-fi
 
 # ------------------------------------------------------------------------------
 # 2. 基本設定 (Basic Settings)
@@ -117,3 +95,8 @@ else
     # 未インストールの場合はシンプルなプロンプトを表示 (フォールバック)
     PROMPT="%F{cyan}%n%f@%F{green}%m%f:%F{blue}%~%f$ "
 fi
+
+# --- Sheldon (Plugin Manager) ---
+# sourceだと毎回ファイルを生成して読み込むが、
+# eval "$(sheldon source)" はメモリ上で展開するため高速かつクリーン
+eval "$(sheldon source)"

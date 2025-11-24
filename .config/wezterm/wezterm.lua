@@ -19,6 +19,10 @@ config.window_padding = {
 	bottom = 0,
 }
 
+-- 文字のレンダリング品質を調整 (Light, Normal, HorizontalLcd など)
+-- Macの場合は 'HorizontalLcd' がくっきり見えることが多いです
+config.freetype_load_target = 'HorizontalLcd'
+
 -- =========================================================
 --  Keys & Behavior (操作)
 -- =========================================================

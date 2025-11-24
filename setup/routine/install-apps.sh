@@ -42,6 +42,9 @@ cli_pkgs=(
   node         # Node.js
   tmux         # Terminal Multiplexer
   starship     # The minimal, blazing-fast prompt shell (今回追加)
+  sheldon      # Fast Zsh Plugin Manager (今回追加)
+	zoxide       # 🚀 賢いディレクトリ移動 (cdの代替) ← 追加
+  fzf          # 🔍 あいまい検索ツール (fzf-tabで必要) ← 追加
 )
 
 echo "🛠 CLI ツールをインストール / 更新します..."

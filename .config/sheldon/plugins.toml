@@ -1,0 +1,45 @@
+shell = "zsh"
+
+# --- 必須: 遅延読み込みの定義 (今回追加した部分) ---
+[templates]
+defer = "{{ hooks?.pre | nl }}{% for file in files %}zsh-defer source \"{{ file }}\"\n{% endfor %}{{ hooks?.post | nl }}"
+
+# ------------------------------
+# 0. 初期化 (Binary Init)
+# ------------------------------
+[plugins.zoxide]
+inline = 'eval "$(zoxide init zsh)"'
+
+# ------------------------------
+# 1. Core Plugins (Zsh Users)
+# ------------------------------
+# zsh-defer 本体は「すぐに」読み込む必要があります (apply指定なし=source)
+[plugins.zsh-defer]
+github = "romkatv/zsh-defer"
+
+# 入力補完
+[plugins.zsh-autosuggestions]
+github = "zsh-users/zsh-autosuggestions"
+use = ["{{ name }}.zsh"]
+apply = ["defer"] # ここで上のテンプレートが使われる
+
+# シンタックスハイライト
+[plugins.zsh-syntax-highlighting]
+github = "zsh-users/zsh-syntax-highlighting"
+apply = ["defer"]
+
+# 強力なTab補完
+[plugins.zsh-completions]
+github = "zsh-users/zsh-completions"
+apply = ["defer"]
+
+# ------------------------------
+# 2. Power Tools
+# ------------------------------
+[plugins.fzf-tab]
+github = "Aloxaf/fzf-tab"
+apply = ["defer"]
+
+[plugins.zsh-abbr]
+github = "olets/zsh-abbr"
+apply = ["defer"]
