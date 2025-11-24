@@ -40,6 +40,7 @@ cli_pkgs=(
   mas          # Mac App Store CLI
   neovim       # NeoVim
   node         # Node.js
+  tmux         # Terminal Multiplexer (今回追加)
 )
 
 echo "🛠 CLI ツールをインストール / 更新します..."
@@ -103,7 +104,7 @@ casks=(
   cursor
   visual-studio-code
   warp
-	wezterm # Luaで設定可能なターミナル
+  wezterm # Luaで設定可能なターミナル
 )
 
 echo "📦 GUI アプリをインストール / 更新します..."
