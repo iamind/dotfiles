@@ -9,13 +9,14 @@ DOTFILES_REPO="git@github.com:iamind/dotfiles.git"
 DOTFILES_DIR="$HOME/.dotfiles"
 
 # リンク対象リスト
-# .config 内のツールはディレクトリごとリンクを作成します
+# .config 内のファイル・ディレクトリもそのまま記述します
 LINK_TARGETS=(
-  .zshenv          # Zshの場所を教える案内看板 (ホーム直下)
-  .config/nvim     # Neovim
-  .config/wezterm  # WezTerm
-  .config/tmux     # Tmux
-  .config/zsh      # Zsh本体
+  .zshenv               # Zshの案内看板 (ホーム直下)
+  .config/nvim          # Neovim (ディレクトリ)
+  .config/wezterm       # WezTerm (ディレクトリ)
+  .config/tmux          # Tmux (ディレクトリ)
+  .config/zsh           # Zsh本体 (ディレクトリ)
+  .config/starship.toml # Starship設定 (ファイル単体)
 )
 
 echo "==> 📦 Preparing dotfiles repository..."
@@ -60,10 +61,8 @@ for file in "${LINK_TARGETS[@]}"; do
   fi
 
   # Backup: 実体ファイル（やディレクトリ）があれば退避
-  # ※ ここで現在の ~/.config/nvim ディレクトリなどもバックアップされます
   if [[ -e "$target_path" ]]; then
     # リンク先が既にシンボリックリンクの場合は、上書きするためバックアップしない（削除する）
-    # ただし、リンク先が違う場合のみここに来るので安全
     if [[ ! -L "$target_path" ]]; then
       ts=$(date +%Y%m%d%H%M%S)
       backup_path="${target_path}.${ts}.bak"

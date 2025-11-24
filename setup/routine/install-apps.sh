@@ -40,7 +40,8 @@ cli_pkgs=(
   mas          # Mac App Store CLI
   neovim       # NeoVim
   node         # Node.js
-  tmux         # Terminal Multiplexer (今回追加)
+  tmux         # Terminal Multiplexer
+  starship     # The minimal, blazing-fast prompt shell (今回追加)
 )
 
 echo "🛠 CLI ツールをインストール / 更新します..."
@@ -63,7 +64,7 @@ echo "🔤 NeoVim Language Server（Homebrew）をインストール / 更新し
 brew install "${nvim_brew_lang_servers[@]}"
 
 # --------------------------------------------------
-# 5. フォント (Nerd Fonts) 【追加】
+# 5. フォント (Nerd Fonts)
 # --------------------------------------------------
 # アイコン表示に必要なフォントをインストールします
 echo "🅰️ フォント（Nerd Fonts）をインストールします..."
