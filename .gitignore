@@ -36,6 +36,10 @@ known_hosts
 .lesshst
 .wget-hsts
 
+# セッションデータ (macOS等) - リポジトリには含めない
+sessions/
+.zsh_sessions/
+
 # ========================================
 #  Local Specific (ローカル限定設定)
 # ========================================
@@ -78,4 +82,4 @@ Thumbs.db
 desktop.ini
 *.log
 tmp/
-temp/ 
+temp/
