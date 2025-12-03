@@ -1,3 +1,4 @@
+
 #!/bin/zsh
 set -euo pipefail
 
@@ -37,13 +38,14 @@ brew analytics off # 📉 匿名統計送信をオフにして通信を抑止
 # --------------------------------------------------
 cli_pkgs=(
   git          # Git 本体
+  tree         # ディレクトリ構造をツリー表示
   mas          # Mac App Store CLI
   neovim       # NeoVim
   node         # Node.js
   tmux         # Terminal Multiplexer
   starship     # The minimal, blazing-fast prompt shell (今回追加)
   sheldon      # Fast Zsh Plugin Manager (今回追加)
-	zoxide       # 🚀 賢いディレクトリ移動 (cdの代替) ← 追加
+  zoxide       # 🚀 賢いディレクトリ移動 (cdの代替) ← 追加
   fzf          # 🔍 あいまい検索ツール (fzf-tabで必要) ← 追加
 )
 
@@ -61,6 +63,7 @@ nvim_brew_lang_servers=(
   vscode-langservers-extracted # HTML/CSS/JSON
   marksman                   # Markdown
   dockerfile-language-server # Docker
+  typescript-language-server   # TypeScript / JavaScript  ← 追加
 )
 
 echo "🔤 NeoVim Language Server（Homebrew）をインストール / 更新します..."
@@ -139,6 +142,7 @@ done
 # --------------------------------------------------
 # - Claude Desktop
 # - Google 日本語入力
+# - Klack # タイピングサウンドアプリ有料
 # --- Chrome拡張機能 ---
 # - 1password
 # - Vimium
@@ -148,3 +152,4 @@ done
 # - 462054704 # Word
 
 echo "🎉 すべてのアプリが最新の状態になりました！"
+

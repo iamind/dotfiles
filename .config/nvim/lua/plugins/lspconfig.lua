@@ -1,17 +1,20 @@
+-- ==========================================================================
+--  plugins/lspconfig.lua - LSP設定（Neovim 0.11 向け）
+--  - require('lspconfig').<server>.setup(...) は使用しない
+--  - vim.lsp.config / vim.lsp.enable を使用
+-- ==========================================================================
+
 return {
-	'neovim/nvim-lspconfig',
+	"neovim/nvim-lspconfig",
+	event = { "BufReadPre", "BufNewFile" },
+	dependencies = {
+		"hrsh7th/cmp-nvim-lsp",
+	},
 	config = function()
-		-- ================================
-		-- 基本設定
-		-- ================================
-		local status, nvim_lsp = pcall(require, "lspconfig")
-		if not status then return end
-
-		local protocol = require('vim.lsp.protocol')
-
 		-- フォーマット保存用 autocommand グループ
 		local augroup_format = vim.api.nvim_create_augroup("Format", { clear = true })
-		local enable_format_on_save = function(_, bufnr)
+
+		local function enable_format_on_save(_, bufnr)
 			vim.api.nvim_clear_autocmds({ group = augroup_format, buffer = bufnr })
 			vim.api.nvim_create_autocmd("BufWritePre", {
 				group = augroup_format,
@@ -22,86 +25,115 @@ return {
 			})
 		end
 
-		-- LSP アタッチ時のキーマップ設定
-		local on_attach = function(client, bufnr)
-			local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-			local opts = { noremap = true, silent = true }
+		-- LSP アタッチ時の共通キーマップ設定
+		local function on_attach(client, bufnr)
+			local opts = { buffer = bufnr, silent = true }
 
-			buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-			buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+			vim.keymap.set(
+				"n",
+				"gD",
+				vim.lsp.buf.declaration,
+				vim.tbl_extend("force", opts, { desc = "Go to declaration" })
+			)
+
+			vim.keymap.set(
+				"n",
+				"gi",
+				vim.lsp.buf.implementation,
+				vim.tbl_extend("force", opts, { desc = "Go to implementation" })
+			)
 		end
 
-		-- 補完アイコン設定
-		protocol.CompletionItemKind = {
-			'', '', '', '', '', '', '', 'ﰮ', '',
-			'', '', '', '', '', '﬌', '', '', '',
-			'', '', '', '', '', 'ﬦ', '',
+		-- LSP 用の capabilities（nvim-cmp 連携）
+		local capabilities = nil
+		do
+			local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+			if ok then
+				capabilities = cmp_nvim_lsp.default_capabilities()
+			end
+		end
+
+		------------------------------------------------------------------------
+		-- 1. 共通設定（すべての LSP に適用）
+		------------------------------------------------------------------------
+		local common = {
+			on_attach = on_attach,
 		}
+		if capabilities ~= nil then
+			common.capabilities = capabilities
+		end
 
-		-- LSP 用の capabilities
-		local capabilities = require('cmp_nvim_lsp').default_capabilities()
+		-- "*" で全サーバーに共通設定をマージ
+		-- 参考: :help vim.lsp.config() / nvim-lspconfig README
+		vim.lsp.config("*", common)
 
-		-- ================================
-		-- 言語ごとの Language Server 設定
-		-- ================================
+		------------------------------------------------------------------------
+		-- 2. サーバーごとの上書き・追加設定
+		------------------------------------------------------------------------
 
 		-- Python: pyright
-		nvim_lsp.pyright.setup {
-			on_attach = on_attach,
-			capabilities = capabilities,
-		}
+		vim.lsp.config("pyright", {
+			-- 共通設定に on_attach / capabilities はすでに含まれている
+		})
 
 		-- Lua: lua-language-server
-		nvim_lsp.lua_ls.setup {
-			capabilities = capabilities,
+		vim.lsp.config("lua_ls", {
 			on_attach = function(client, bufnr)
 				on_attach(client, bufnr)
-				enable_format_on_save(client, bufnr) -- 保存時にフォーマット
+				enable_format_on_save(client, bufnr)
 			end,
 			settings = {
 				Lua = {
-					diagnostics = { globals = { 'vim' } },
+					diagnostics = { globals = { "vim" } },
 					workspace = {
 						library = vim.api.nvim_get_runtime_file("", true),
 						checkThirdParty = false,
 					},
 				},
 			},
-		}
+		})
 
 		-- YAML: yamlls
-		nvim_lsp.yamlls.setup {
-			on_attach = on_attach,
-			capabilities = capabilities,
-		}
+		vim.lsp.config("yamlls", {})
 
 		-- JSON: jsonls
-		nvim_lsp.jsonls.setup {
-			on_attach = on_attach,
-			capabilities = capabilities,
-		}
+		vim.lsp.config("jsonls", {})
 
 		-- Terraform: terraformls
-		nvim_lsp.terraformls.setup {
-			on_attach = on_attach,
-			capabilities = capabilities,
-		}
+		vim.lsp.config("terraformls", {})
 
 		-- Markdown: marksman
-		nvim_lsp.marksman.setup {
-			on_attach = on_attach,
-			capabilities = capabilities,
-		}
+		vim.lsp.config("marksman", {})
 
 		-- Dockerfile: dockerls
-		nvim_lsp.dockerls.setup {
-			on_attach = on_attach,
-			capabilities = capabilities,
-		}
+		vim.lsp.config("dockerls", {})
 
-		-- ================================
-		-- Diagnostic 表示設定
-		-- ================================
+		-- JavaScript/TypeScript: ts_ls
+		vim.lsp.config("ts_ls", {
+			on_attach = function(client, bufnr)
+				on_attach(client, bufnr)
+				enable_format_on_save(client, bufnr)
+			end,
+		})
+
+		------------------------------------------------------------------------
+		-- 3. サーバーを有効化
+		--    参考: nvim-lspconfig README の Migration / Quickstart
+		------------------------------------------------------------------------
+		vim.lsp.enable({
+			"pyright",
+			"lua_ls",
+			"yamlls",
+			"jsonls",
+			"terraformls",
+			"marksman",
+			"dockerls",
+			"ts_ls",
+		})
+
+		------------------------------------------------------------------------
+		-- 4. Diagnostic 表示設定
+		------------------------------------------------------------------------
 		vim.diagnostic.config({
 			underline = true,
 			update_in_insert = true,
@@ -110,12 +142,12 @@ return {
 			float = { source = true },
 			signs = {
 				text = {
-					[vim.diagnostic.severity.ERROR] = " ",
-					[vim.diagnostic.severity.WARN]  = " ",
-					[vim.diagnostic.severity.HINT]  = " ",
-					[vim.diagnostic.severity.INFO]  = " ",
+					[vim.diagnostic.severity.ERROR] = " ",
+					[vim.diagnostic.severity.WARN]  = " ",
+					[vim.diagnostic.severity.HINT]  = " ",
+					[vim.diagnostic.severity.INFO]  = " ",
 				},
 			},
 		})
-	end
+	end,
 }
