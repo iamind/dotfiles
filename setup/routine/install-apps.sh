@@ -1,4 +1,3 @@
-
 #!/bin/zsh
 set -euo pipefail
 
@@ -47,6 +46,7 @@ cli_pkgs=(
   sheldon      # Fast Zsh Plugin Manager (今回追加)
   zoxide       # 🚀 賢いディレクトリ移動 (cdの代替) ← 追加
   fzf          # 🔍 あいまい検索ツール (fzf-tabで必要) ← 追加
+  ripgrep      # 高速な全文検索ツール (rg) ← 追加
 )
 
 echo "🛠 CLI ツールをインストール / 更新します..."
